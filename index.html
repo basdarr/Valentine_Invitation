@@ -113,10 +113,10 @@
         
         .tap-text {
             position: absolute;
-            top: 55%;
+            top: 65%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100%;
+            white-space: nowrap;
             text-align: center;
             color: white;
             font-size: 18px;
@@ -127,9 +127,13 @@
         }
 
         @keyframes textSlideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translate(-50%, -50%);
             }
         }
         
@@ -265,6 +269,7 @@
             align-items: flex-start;
             padding: 100px 20px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .letter-container {
@@ -438,7 +443,8 @@
             <div class="heart-seal"></div>
             <div class="tap-text">PENCET AKU PLISS!!</div>
         </div>
-    
+    </div>
+
     <!-- STAGE 2: Continue or Not -->
     <div class="continue-screen" id="continueStage">
         <div class="continue-box">
@@ -504,6 +510,9 @@
     <script>
         // Stage 1: Envelope click
         function openEnvelope() {
+            if(opened) return;
+            opened = true;
+            
             document.getElementById('envelopeStage').classList.remove('visible');
             document.getElementById('envelopeStage').classList.add('hidden');
             
@@ -514,9 +523,10 @@
         
         // Stage 2: No button handling
         let noClickCount = 0;
-        const noBtn = document.getElementById('noBtn');
         
         function showPersuasion() {
+            const noBtn = document.getElementById('noBtn');
+
             document.getElementById('continueStage').classList.remove('visible');
             document.getElementById('continueStage').classList.add('hidden');
             
