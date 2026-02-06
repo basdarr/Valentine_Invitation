@@ -1,7 +1,3 @@
-import webbrowser
-import os
-
-html_content = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,8 +20,11 @@ html_content = '''
             justify-content: center;
             align-items: center;
             font-family: 'Poppins', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
             padding: 20px;
+            scroll-padding-top: 80px;
         }
         
         /* STAGE 1: Zoom-in Envelope */
@@ -36,8 +35,10 @@ html_content = '''
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 30px;
             z-index: 1000;
             background: rgba(0, 0, 0, 0.9);
         }
@@ -47,18 +48,21 @@ html_content = '''
             height: 200px;
             position: relative;
             cursor: pointer;
-            transform: scale(0.1);
-            animation: zoomIn 1s ease-out forwards;
+            transform: scale(0);
+            animation: envelopeZoom 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
         
-        @keyframes zoomIn {
+        @keyframes envelopeZoom {
             0% {
-                transform: scale(0.1);
+                transform: scale(0) rotate(-10deg);
                 opacity: 0;
             }
-            100% {
-                transform: scale(1);
+            60% {
+                transform: scale(1.1) rotate(3deg);
                 opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0);
             }
         }
         
@@ -108,16 +112,25 @@ html_content = '''
         }
         
         .tap-text {
-            color: white;
-            margin-top: 120px;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
             text-align: center;
+            color: white;
             font-size: 18px;
-            animation: pulse 2s infinite;
+            opacity: 0;
+            animation: textSlideUp 1s ease-out forwards;
+            animation-delay: 1s;
+            pointer-events: none;
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+
+        @keyframes textSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* STAGE 2: Continue or Not */
@@ -243,25 +256,22 @@ html_content = '''
         
         /* STAGE 4: Invitation Letter */
         .invitation-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: relative;
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: none;
             justify-content: center;
-            align-items: center;
-            z-index: 4000;
-            overflow: hidden;
+            align-items: flex-start;
+            padding: 100px 20px;
+            overflow-y: auto;
         }
         
         .letter-container {
             position: relative;
             width: 90%;
             max-width: 600px;
-            transform: translateY(100vh);
-            animation: slideUp 1s ease-out forwards 0.5s;
+            perspective: 1200px;
         }
         
         @keyframes slideUp {
@@ -277,6 +287,26 @@ html_content = '''
             overflow: hidden;
             border: 2px solid #ff6b8b;
             font-family: 'Poppins', sans-serif;
+
+            transform-origin: top;
+            transform: rotateX(-90deg);
+            opacity: 0;
+            animation: openLetter 1.2s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes openLetter {
+            0% {
+                transform: rotateX(-90deg);
+                opacity: 0;
+            }
+            60% {
+                transform: rotateX(20deg);
+                opacity: 1;
+            }
+            100% {
+                transform: rotateX(0deg);
+            }
         }
         
         .letter-paper::before {
@@ -406,9 +436,8 @@ html_content = '''
             <div class="envelope-body"></div>
             <div class="envelope-front"></div>
             <div class="heart-seal"></div>
+            <div class="tap-text">PENCET AKU PLISS!!</div>
         </div>
-        <div class="tap-text">PENCET AKU PLISS!!</div>
-    </div>
     
     <!-- STAGE 2: Continue or Not -->
     <div class="continue-screen" id="continueStage">
@@ -560,54 +589,6 @@ html_content = '''
         
         // Mobile touch support
         document.addEventListener('touchstart', function() {}, {passive: true});
-        
-        // Auto-open envelope on page load after 2 seconds
-        setTimeout(() => {
-            const envelope = document.querySelector('.envelope');
-            envelope.style.animation = 'zoomIn 1s ease-out forwards';
-        }, 2000);
     </script>
 </body>
 </html>
-'''
-
-# Function to create and save the file
-def create_interactive_invitation():
-    # Save the HTML file
-    with open('interactive_valentine.html', 'w', encoding='utf-8') as f:
-        f.write(html_content)
-    
-    print("💝 Interactive Valentine invitation created!")
-    print("📁 File saved as: 'interactive_valentine.html'")
-    
-    # Auto-open in browser
-    print("🌐 Opening in browser...")
-    webbrowser.open('file://' + os.path.abspath('interactive_valentine.html'))
-    
-    # Create ngrok instructions
-    print("\n" + "="*50)
-    print("📤 CARA JADIIN LINK (PILIH SALAH SATU):")
-    print("="*50)
-    print("\n1. 🚀 NGROK (Paling Gampang):")
-    print("   a. Download ngrok dari ngrok.com")
-    print("   b. Di terminal: python -m http.server 8000")
-    print("   c. Di terminal lain: ngrok http 8000")
-    print("   d. Kirim link ngrok ke cewe lu!")
-    
-    print("\n2. ☁️ NETLIFY (Gratis & Cepat):")
-    print("   a. Buka https://app.netlify.com/drop")
-    print("   b. Drag file interactive_valentine.html")
-    print("   c. Dapat link instan!")
-    
-    print("\n3. 💾 LOCAL NETWORK:")
-    print("   a. Cari IP lu: ipconfig (cari IPv4)")
-    print("   b. Start server: python -m http.server 8000")
-    print("   c. Kirim: http://[IP-ADDRESS]:8000/interactive_valentine.html")
-    
-    print("\n💡 Customize sebelum kirim:")
-    print("   - Ganti '[Your Name]' dengan nama lu")
-    print("   - Bisa ganti tanggal/lokasi")
-    print("   - Tambah pesan pribadi kalo mau")
-
-if __name__ == "__main__":
-    create_interactive_invitation()
