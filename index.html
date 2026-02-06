@@ -1,608 +1,207 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Valentine's Invitation 💌</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            overflow-y: auto;
-            scroll-behavior: smooth;
-            padding: 20px;
-            scroll-padding-top: 80px;
-        }
-        
-        /* STAGE 1: Zoom-in Envelope */
-        .envelope-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.9);
-        }
-        
-        .envelope {
-            width: 300px;
-            height: 200px;
-            position: relative;
-            cursor: pointer;
-            z-index: 5;
-            transform: scale(0);
-            animation: envelopeZoom 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-        
-        @keyframes envelopeZoom {
-            0% {
-                transform: scale(0) rotate(-10deg);
-                opacity: 0;
-            }
-            60% {
-                transform: scale(1.1) rotate(3deg);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1) rotate(0);
-            }
-        }
-        
-        .envelope-front {
-            width: 0;
-            height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 100px solid #ff6b8b;
-            position: relative;
-        }
-        
-        .envelope-body {
-            width: 300px;
-            height: 200px;
-            background: #ff8fa3;
-            position: absolute;
-            top: 50px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        
-        .heart-seal {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            animation: heartbeat 1.5s infinite;
-        }
-        
-        .heart-seal::before {
-            content: '💌';
-            font-size: 30px;
-        }
-        
-        @keyframes heartbeat {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.1); }
-        }
-        
-        .tap-text {
-            position: absolute;
-            top: 65%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            white-space: nowrap;
-            text-align: center;
-            color: white;
-            font-size: 18px;
-            opacity: 0;
-            animation: textSlideUp 1s ease-out forwards;
-            animation-delay: 1s;
-            pointer-events: none;
-            z-index: 1;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Invitation ❤️</title>
 
-        @keyframes textSlideUp {
-            from {
-                opacity: 0;
-                transform: translate(-50%, 20px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
-        
-        /* STAGE 2: Continue or Not */
-        .continue-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            text-align: center;
-        }
-        
-        .continue-box {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            transform: scale(0.8);
-            animation: popIn 0.5s ease-out forwards;
-        }
-        
-        @keyframes popIn {
-            to { transform: scale(1); }
-        }
-        
-        .continue-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 42px;
-            color: #f5576c;
-            margin-bottom: 20px;
-        }
-        
-        .continue-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-        
-        .btn {
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .btn-yes {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .btn-no {
-            background: #f44336;
-            color: white;
-            position: relative;
-        }
-        
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        /* STAGE 3: Persuasion Popup */
-        .persuasion-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-        }
-        
-        .persuasion-box {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 400px;
-            animation: shake 0.5s ease-in-out;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-        
-        .persuasion-text {
-            font-size: 24px;
-            color: #f5576c;
-            margin-bottom: 30px;
-            font-family: 'Dancing Script', cursive;
-        }
-        
-        .persuasion-btn {
-            background: #667eea;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .persuasion-btn:hover {
-            background: #764ba2;
-            transform: scale(1.1);
-        }
-        
-        /* STAGE 4: Invitation Letter */
-        .invitation-screen {
-            position: relative;
-            width: 100%;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: none;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 100px 20px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .letter-container {
-            position: relative;
-            width: 90%;
-            max-width: 600px;
-            perspective: 1200px;
-        }
-        
-        @keyframes slideUp {
-            to { transform: translateY(0); }
-        }
-        
-        .letter-paper {
-            background: #fffef0;
-            padding: 50px 40px;
-            border-radius: 10px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #ff6b8b;
-            font-family: 'Poppins', sans-serif;
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-            transform-origin: top;
-            transform: rotateX(-90deg);
-            opacity: 0;
-            animation: openLetter 1.2s ease forwards;
-            animation-delay: 0.5s;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+min-height:100vh;
+overflow-x:hidden;
+-webkit-overflow-scrolling:touch;
+}
 
-        @keyframes openLetter {
-            0% {
-                transform: rotateX(-90deg);
-                opacity: 0;
-            }
-            60% {
-                transform: rotateX(20deg);
-                opacity: 1;
-            }
-            100% {
-                transform: rotateX(0deg);
-            }
-        }
-        
-        .letter-paper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 10px;
-            background: linear-gradient(90deg, #ff6b8b, #ffafbd);
-        }
-        
-        .letter-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .letter-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 48px;
-            color: #ff6b8b;
-            margin-bottom: 10px;
-        }
-        
-        .letter-subtitle {
-            color: #667eea;
-            font-size: 18px;
-            font-weight: 600;
-        }
-        
-        .letter-content {
-            line-height: 1.8;
-            color: #333;
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
-        
-        .letter-details {
-            background: #fff5f7;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .detail-item {
-            margin: 10px 0;
-            color: #555;
-        }
-        
-        .letter-footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px dashed #ff6b8b;
-        }
-        
-        .signature {
-            font-family: 'Dancing Script', cursive;
-            font-size: 32px;
-            color: #667eea;
-            margin-top: 10px;
-        }
-        
-        .floating-hearts {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
-        .floating-heart {
-            position: absolute;
-            font-size: 24px;
-            opacity: 0.7;
-            animation: floatUp 5s linear infinite;
-        }
-        
-        @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        .rsvp-button {
-            background: linear-gradient(135deg, #ff6b8b, #ffafbd);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 18px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 20px 0;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .rsvp-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(255,107,139,0.3);
-        }
-        
-        /* Hidden class */
-        .hidden {
-            display: none !important;
-        }
-        
-        .visible {
-            display: flex !important;
-        }
-    </style>
+/* STAGE SYSTEM */
+.stage{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+opacity:0;
+pointer-events:none;
+transition:.6s;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.stage.visible{
+opacity:1;
+pointer-events:auto;
+z-index:100;
+backdrop-filter:blur(6px);
+}
+
+/* ENVELOPE */
+.envelope{
+width:200px;height:130px;
+background:#ff6b8b;
+position:relative;
+cursor:pointer;
+border-radius:8px;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+font-weight:600;
+touch-action:manipulation;
+transform-style:preserve-3d;
+transition:.6s;
+}
+
+.envelope:hover{transform:scale(1.1);}
+
+.envelope::before{
+content:'';
+position:absolute;
+top:-65px;
+border-left:100px solid transparent;
+border-right:100px solid transparent;
+border-bottom:65px solid #ff4d6d;
+transform-origin:bottom;
+transition:.6s;
+}
+
+.envelope.open::before{
+transform:rotateX(160deg);
+}
+
+/* LETTER */
+.invitation-screen{
+overflow-y:auto;
+align-items:flex-start;
+}
+
+.letter-paper{
+background:#fffef0;
+padding:50px 40px;
+border-radius:10px;
+box-shadow:0 30px 60px rgba(0,0,0,.4);
+max-width:600px;
+margin-top:50px;
+animation:slideUp 1s ease forwards;
+}
+
+@keyframes slideUp{
+from{transform:translateY(200px);opacity:0;}
+to{transform:translateY(0);opacity:1;}
+}
+
+/* BUTTON */
+.btn{
+margin-top:25px;
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
+
+/* HEARTS */
+#floatingHearts{
+position:fixed;
+top:0;left:0;width:100%;height:100%;
+pointer-events:none;
+overflow:hidden;
+z-index:999;
+}
+
+.floating-heart{
+position:absolute;
+animation:floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+from{transform:translateY(100vh);opacity:1;}
+to{transform:translateY(-10vh);opacity:0;}
+}
+
+/* CONFETTI */
+.confetti{
+position:fixed;
+font-size:20px;
+animation:confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall{
+from{transform:translateY(-10vh) rotate(0);}
+to{transform:translateY(110vh) rotate(720deg);}
+}
+</style>
 </head>
+
 <body>
-    <!-- STAGE 1: Zoom-in Envelope -->
-    <div class="envelope-container visible" id="envelopeStage">
-        <div class="envelope" onclick="openEnvelope()">
-            <div class="envelope-body"></div>
-            <div class="envelope-front"></div>
-            <div class="heart-seal"></div>
-            <div class="tap-text">PENCET AKU PLISS!!</div>
-        </div>
-    </div>
 
-    <!-- STAGE 2: Continue or Not -->
-    <div class="continue-screen" id="continueStage">
-        <div class="continue-box">
-            <div class="continue-title">SIAAPPPP?????</div>
-            <p style="color: #666; margin-bottom: 20px; font-size: 18px;">
-                ADA YANG SPESIAL NIH BALIK INI...
-            </p>
-            <div class="continue-buttons">
-                <button class="btn btn-yes" onclick="showInvitation()">IYAA BANGET!!! 💖</button>
-                <button class="btn btn-no" id="noBtn" onclick="showPersuasion()">SKIP AHH</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- STAGE 3: Persuasion Popup -->
-    <div class="persuasion-popup" id="persuasionStage">
-        <div class="persuasion-box">
-            <div class="persuasion-text">LANJUTIN DONG PWISS...☹️ </div>
-            <p style="color: #666; margin-bottom: 30px;">
-                AKU UDAH SIAPIN YANG SPESIAL NIH BUAT KAMU!
-            </p>
-            <button class="persuasion-btn" onclick="showInvitation()">Okay, Lanjut! 💕</button>
-        </div>
-    </div>
-    
-    <!-- STAGE 4: Invitation Letter -->
-    <div class="invitation-screen" id="invitationStage">
-        <div class="letter-container">
-            <div class="floating-hearts" id="floatingHearts"></div>
-            <div class="letter-paper">
-                <div class="letter-header">
-                    <div class="letter-title">You're Invited!</div>
-                    <div class="letter-subtitle">A Special Valentine's Dinner</div>
-                </div>
-                
-                <div class="letter-content">
-                    <p>To my dearest love,</p>
-                    <p>On this special day dedicated to love, I want to create beautiful memories with you. 
-                    Every moment spent with you is precious, and I want this Valentine's Day to be extra special.</p>
-                    
-                    <div class="letter-details">
-                        <div class="detail-item">📅 <strong>Date:</strong> February 14, 2026</div>
-                        <div class="detail-item">⏰ <strong>Time:</strong> 6:00 PM</div>
-                        <div class="detail-item">📍 <strong>Location:</strong> RAHASIA 🤪 </div>
-                        <div class="detail-item">👗 <strong>Dress Code:</strong> Black and Cream </div>
-                    </div>
-                    
-                    <p>I've arranged everything to make this evening unforgettable. 
-                    Just bring your beautiful smile and that amazing laugh that melts my heart.</p>
-                </div>
-                
-                <div class="letter-footer">
-                    <p style="color: #666; margin-bottom: 20px;">
-                        "You are the reason my world is filled with colors and happiness."
-                    </p>
-                    <button class="rsvp-button" onclick="sendRSVP()">💝 I'll Be There! 💝</button>
-                    <div class="signature">With all my love,<br>[Your Name]</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        let opened = false;
-        
-        // Stage 1: Envelope click
-        function openEnvelope() {
-            if(opened) return;
-            opened = true;
+<div id="floatingHearts"></div>
 
-            document.getElementById('envelopeStage').classList.remove('visible');
-            document.getElementById('envelopeStage').classList.add('hidden');
-            
-            setTimeout(() => {
-                document.getElementById('continueStage').classList.add('visible');
-            }, 300);
-        }
-        
-        // Stage 2: No button handling
-        let noClickCount = 0;
-        
-        function showPersuasion() {
-            const noBtn = document.getElementById('noBtn');
+<!-- ENVELOPE -->
+<div id="envelopeStage" class="stage visible">
+<div class="envelope" onclick="openEnvelope()">💌 Open Me</div>
+</div>
 
-            document.getElementById('continueStage').classList.remove('visible');
-            document.getElementById('continueStage').classList.add('hidden');
-            
-            setTimeout(() => {
-                document.getElementById('persuasionStage').classList.add('visible');
-            }, 300);
-            
-            // Change button text on each click
-            noClickCount++;
-            const texts = ["Maybe Later", "Are you sure?", "Please?", "I'll be sad", "Last chance!"];
-            noBtn.textContent = texts[Math.min(noClickCount - 1, texts.length - 1)];
-            
-            // Move button randomly
-            const x = Math.random() * 200 - 100;
-            const y = Math.random() * 200 - 100;
-            noBtn.style.transform = `translate(${x}px, ${y}px)`;
-        }
-        
-        // Stage 3: Show invitation
-        function showInvitation() {
-            // Close all other stages
-            document.getElementById('persuasionStage').classList.remove('visible');
-            document.getElementById('persuasionStage').classList.add('hidden');
-            document.getElementById('continueStage').classList.remove('visible');
-            document.getElementById('continueStage').classList.add('hidden');
-            
-            setTimeout(() => {
-                document.getElementById('invitationStage').classList.add('visible');
-                createFloatingHearts();
-            }, 300);
-        }
-        
-        // Create floating hearts
-        function createFloatingHearts() {
-            const container = document.getElementById('floatingHearts');
-            const hearts = ['❤️', '💖', '💕', '💗', '💓', '💞'];
-            
-            for(let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart';
-                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDelay = Math.random() * 5 + 's';
-                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                container.appendChild(heart);
-            }
-        }
-        
-        // RSVP function
-        function sendRSVP() {
-            alert("🎉 Yay! Can't wait to see you, bbyyy! 💕\n\nI'll pick you up at 5:00 PM.\n\nLove you endlessly! 😘");
-            
-            // Add confetti effect
-            for(let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.innerHTML = '💖';
-                    heart.style.position = 'fixed';
-                    heart.style.fontSize = '25px';
-                    heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.top = Math.random() * 100 + 'vh';
-                    heart.style.animation = 'floatUp 2s linear forwards';
-                    heart.style.zIndex = '9999';
-                    document.body.appendChild(heart);
-                    
-                    setTimeout(() => heart.remove(), 2000);
-                }, i * 100);
-            }
-        }
-        
-        // Mobile touch support
-        document.addEventListener('touchstart', function() {}, {passive: true});
-    </script>
+<!-- LETTER -->
+<div id="invitationStage" class="stage invitation-screen">
+<div class="letter-paper">
+<h2 style="text-align:center;">Will You Be My Valentine? ❤️</h2>
+<p style="margin-top:20px;text-align:center;">
+Aku cuma mau bilang…<br>
+hari valentine nanti…<br>
+mau ga jalan bareng aku? 😊
+</p>
+
+<div style="text-align:center;">
+<button class="btn" onclick="accept()">YES 💖</button>
+</div>
+</div>
+</div>
+
+<script>
+function openEnvelope(){
+const env=document.querySelector('.envelope');
+env.classList.add('open');
+
+setTimeout(()=>{
+document.getElementById('envelopeStage').classList.remove('visible');
+document.getElementById('invitationStage').classList.add('visible');
+createFloatingHearts();
+},700);
+}
+
+function createFloatingHearts(){
+const container=document.getElementById('floatingHearts');
+container.innerHTML="";
+const hearts=['❤️','💖','💕','💓','💗'];
+
+for(let i=0;i<25;i++){
+let h=document.createElement('div');
+h.className='floating-heart';
+h.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+h.style.left=Math.random()*100+'%';
+h.style.animationDelay=Math.random()*5+'s';
+h.style.fontSize=(Math.random()*20+15)+'px';
+container.appendChild(h);
+}
+}
+
+function accept(){
+for(let i=0;i<40;i++){
+let c=document.createElement('div');
+c.className='confetti';
+c.innerHTML='💖';
+c.style.left=Math.random()*100+'%';
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),3000);
+}
+alert("YAY ❤️ see you on valentine!");
+}
+</script>
+
 </body>
 </html>
